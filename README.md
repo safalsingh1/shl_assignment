@@ -43,21 +43,24 @@ shl_assignment/
     pip install -r requirements.txt
     ```
 
-### 1. Backend (API) - Use Render (Manual Setup)
-**Avoid using the Blueprint (`render.yaml`) if it asks for a credit card. Use this manual method for the Free Tier:**
+### 1. Backend (API) - Use Railway (Recommended)
+1.  Go to [railway.app](https://railway.app/).
+2.  Click **New Project** -> **GitHub Repo** -> `shl_assignment`.
+3.  Railway will auto-detect the `requirements.txt` and `Procfile`.
+4.  **Environment Variables**:
+    - Go to **Variables** tab.
+    - Add `GEMINI_API_KEY` = `your_key`.
+5.  **Build Command**: Railway handles this automatically using `requirements.txt`.
+6.  Once deployed, copy the provided domain URL (e.g., `https://shl-assignment-production.up.railway.app`).
 
-1.  Log in to [Render Dashboard](https://dashboard.render.com/).
-2.  Click **New +** -> **Web Service** (NOT Blueprint).
-3.  Connect your repository (`shl_assignment`).
-4.  **Name**: `shl-api` (or similar).
-5.  **Runtime**: `Python 3`.
-6.  **Build Command**: `pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt && python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"`
-7.  **Start Command**: `python -m uvicorn api.api:app --host 0.0.0.0 --port $PORT`
-8.  **Instance Type**: Select **Free**.
-9.  **Environment Variables**:
-    - Key: `GEMINI_API_KEY`
-    - Value: `your_actual_api_key`
-10. Click **Create Web Service**.
+### Alternatives (Render)
+If you prefer Render:
+1.  **Avoid** the Blueprint (`render.yaml`) if it asks for payment.
+2.  Use **Manual Web Service** -> Connect Repo.
+3.  **Build Command**: `pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt && python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"`
+4.  **Start Command**: `python -m uvicorn api.api:app --host 0.0.0.0 --port $PORT`
+5.  **Instance Type**: Free.
+6.  **Env Vars**: `GEMINI_API_KEY`.
 
 ### 2. Generate Predictions (CSV)
 To generate the `predictions.csv` file for the test set:
