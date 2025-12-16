@@ -9,5 +9,3 @@ streamlit
 google-generativeai
 sentence-transformers
 faiss-cpu
-selenium
-webdriver-manager
