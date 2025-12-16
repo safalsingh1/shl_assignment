@@ -1,9 +1,9 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from pydantic import BaseModel
 from typing import List
 import sys
 import os
+import contextlib
 
 # Add root to path so we can import recommender
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -13,15 +13,24 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-app = FastAPI()
+# Global Engine
+engine = None
 
-# Initialize Engine
-# Ensure GEMINI_API_KEY is in env or this will use fallback
-try:
-    engine = RecommendationEngine()
-except Exception as e:
-    print(f"Error initializing engine: {e}")
-    engine = None
+@contextlib.asynccontextmanager
+async def lifespan(app: FastAPI):
+    global engine
+    try:
+        print("Starting up... Loading Recommendation Engine...")
+        engine = RecommendationEngine()
+        print("Engine loaded successfully.")
+    except Exception as e:
+        print(f"CRITICAL ERROR initializing engine: {e}")
+        engine = None
+    yield
+    # Cleanup if needed
+    print("Shutting down...")
+
+app = FastAPI(lifespan=lifespan)
 
 class RecommendationInput(BaseModel):
     query: str
@@ -41,7 +50,8 @@ class RecommendationOutput(BaseModel):
 @app.get("/health")
 def health_check():
     if engine is None:
-        raise HTTPException(status_code=503, detail="Engine not initialized")
+        # Check if it was a startup error or just slow
+        return {"status": "starting_or_failed", "detail": "Engine not ready"}
     return {"status": "ok"}
 
 @app.post("/recommend", response_model=RecommendationOutput)
@@ -80,4 +90,6 @@ def recommend(input_data: RecommendationInput):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # Respect PORT env var for Render
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

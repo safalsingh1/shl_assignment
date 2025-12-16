@@ -43,19 +43,21 @@ shl_assignment/
     pip install -r requirements.txt
     ```
 
-## Usage
+### 1. Backend (API) - Use Render (Manual Setup)
+**Avoid using the Blueprint (`render.yaml`) if it asks for a credit card. Use this manual method for the Free Tier:**
 
-### 1. Web Application (Frontend)
-The easiest way to test the system is via the Streamlit UI.
-**Terminal 1 (Start API)**:
-```bash
-python -m uvicorn api.api:app --reload
-```
-**Terminal 2 (Start Frontend)**:
-```bash
-python -m streamlit run api/frontend.py
-```
-*Note: The frontend connects to `http://localhost:8000`.*
+1.  Log in to [Render Dashboard](https://dashboard.render.com/).
+2.  Click **New +** -> **Web Service** (NOT Blueprint).
+3.  Connect your repository (`shl_assignment`).
+4.  **Name**: `shl-api` (or similar).
+5.  **Runtime**: `Python 3`.
+6.  **Build Command**: `pip install -r requirements.txt && python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"`
+7.  **Start Command**: `python -m uvicorn api.api:app --host 0.0.0.0 --port 10000`
+8.  **Instance Type**: Select **Free**.
+9.  **Environment Variables**:
+    - Key: `GEMINI_API_KEY`
+    - Value: `your_actual_api_key`
+10. Click **Create Web Service**.
 
 ### 2. Generate Predictions (CSV)
 To generate the `predictions.csv` file for the test set:
