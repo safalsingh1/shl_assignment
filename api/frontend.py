@@ -11,6 +11,8 @@ API_URL = os.environ.get("API_URL", "http://localhost:8000")
 
 st.title("SHL Assessment Recommender")
 st.markdown(f"Enter a job description or query to get relevant SHL assessment recommendations.\\n*Connected to: `{API_URL}`*")
+st.info("Note: The backend is hosted on Railway Free Tier and may sleep after inactivity. The first request might take 1-2 minutes to wake it up. If it fails, please wait a moment and try again. Subsequent requests will be fast.")
+
 
 # Input
 query = st.text_area("Job Description / Query", height=100, placeholder="e.g. Seeking a Senior Java Developer with leadership skills...")
