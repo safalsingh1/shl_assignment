@@ -5,8 +5,12 @@ import pandas as pd
 # Page Config
 st.set_page_config(page_title="SHL Recommender", layout="wide")
 
+import os
+# Get API URL from env or streamlit secrets, default to localhost
+API_URL = os.environ.get("API_URL", "http://localhost:8000")
+
 st.title("SHL Assessment Recommender")
-st.markdown("Enter a job description or query to get relevant SHL assessment recommendations.")
+st.markdown(f"Enter a job description or query to get relevant SHL assessment recommendations.\\n*Connected to: `{API_URL}`*")
 
 # Input
 query = st.text_area("Job Description / Query", height=100, placeholder="e.g. Seeking a Senior Java Developer with leadership skills...")
@@ -19,7 +23,7 @@ if st.button("Get Recommendations"):
         with st.spinner("Analyzing and retrieving..."):
             try:
                 # Call API
-                response = requests.post("http://localhost:8000/recommend", json={"query": query})
+                response = requests.post(f"{API_URL}/recommend", json={"query": query})
                 
                 if response.status_code == 200:
                     data = response.json()
