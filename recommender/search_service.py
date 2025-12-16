@@ -4,7 +4,16 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 import os
 
-INDEX_DIR = r"c:\Users\safal\Desktop\shl_assignment\data\indexes"
+# Use relative paths for deployment compatibility
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__))) # go up from recommender/search_service.py to root
+if os.path.basename(BASE_DIR) == 'recommender': # Safety check if running as module
+     BASE_DIR = os.path.dirname(BASE_DIR)
+
+# Fallback: Assume CWD is root (which is true for params: python -m api)
+if not os.path.exists(os.path.join(BASE_DIR, 'data')):
+    BASE_DIR = os.getcwd()
+
+INDEX_DIR = os.path.join(BASE_DIR, "data", "indexes")
 INDEX_FILE = os.path.join(INDEX_DIR, "shl_embeddings.index")
 META_FILE = os.path.join(INDEX_DIR, "shl_metadata.pkl")
 MODEL_NAME = 'all-MiniLM-L6-v2'
