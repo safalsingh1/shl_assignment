@@ -51,8 +51,8 @@ shl_assignment/
 3.  Connect your repository (`shl_assignment`).
 4.  **Name**: `shl-api` (or similar).
 5.  **Runtime**: `Python 3`.
-6.  **Build Command**: `pip install -r requirements.txt && python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"`
-7.  **Start Command**: `python -m uvicorn api.api:app --host 0.0.0.0 --port 10000`
+6.  **Build Command**: `pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt && python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"`
+7.  **Start Command**: `python -m uvicorn api.api:app --host 0.0.0.0 --port $PORT`
 8.  **Instance Type**: Select **Free**.
 9.  **Environment Variables**:
     - Key: `GEMINI_API_KEY`
