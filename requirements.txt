@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pydantic
+pandas
+numpy<2.0
+requests
+python-dotenv
+streamlit
+google-generativeai
+sentence-transformers
+faiss-cpu
+selenium
+webdriver-manager

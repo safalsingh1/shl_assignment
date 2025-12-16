@@ -1,0 +1,19 @@
+{
+  "baseline_mean_recall_at_10": 0.75,
+  "model_mean_recall_at_10": 0.75,
+  "details": {
+    "num_queries": 4,
+    "baseline_recalls": [
+      1.0,
+      1.0,
+      1.0,
+      0.0
+    ],
+    "model_recalls": [
+      1.0,
+      1.0,
+      1.0,
+      0.0
+    ]
+  }
+}
